@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: todo-app
+  name: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - image: image-registry.openshift-image-registry.svc:5000/ogwtest/todo-app:latest
+          imagePullPolicy: Always
+          name: todo-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: DATASOURCE_URL
+              value: jdbc:postgresql://todo-db:5432/postgres
+            - name: DATASOURCE_USERNAME
+              value: postgres
+            - name: DATASOURCE_PASSWORD
+              value: postgres

@@ -1,0 +1,90 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css">
+    <title>TODO</title>
+</head>
+<body>
+<div class="container">
+    <h1>TODO</h1>
+    <hr>
+    <div class="row">
+        <div class="col-2">
+            <button type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editorModal"
+                    data-bs-edit-type="new"
+            >追加</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <th>件名</th>
+                <th>期日</th>
+                <th>状態</th>
+                <th></th>
+            </thead>
+            <tr th:each="todo : ${todos}">
+                <td>[[${todo.title}]]</td>
+                <td>[[${todo.dueDate}]]</td>
+                <td>[[${todo.done ? '完了' : '未完了'}]]</td>
+                <td>
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editorModal"
+                            th:data-bs-todo-id="${todo.id}"
+                            data-bs-edit-type="edit"
+                    >編集</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="editorModal" tabindex="-1" aria-labelledby="editorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editorLabel">TODO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <label for="title">件名</label>
+                        <input id="title" type="text" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <label for="content">詳細</label>
+                        <textarea id="content" type="text" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="row">
+                        <label for="dueDate">期日</label>
+                        <input id="dueDate" type="date" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <label for="done" class="form-check-label">完了？</label>
+                            <input id="done" type="checkbox" class="form-check-input">
+                        </div>
+                    </div>
+                    <input id="editType" type="hidden">
+                    <input id="id" type="hidden">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="deleteButton" class="btn btn-danger">削除</button>
+                <button type="button" id="saveButton" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/bootstrap-5.0.0-beta1-dist/js/bootstrap.min.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>

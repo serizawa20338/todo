@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.todo.mapper.TodoMapper">
+    <select id="findAll" resultType="com.example.todo.entity.Todo">
+        select
+            id,
+            title,
+            content,
+            due_date as "dueDate",
+            is_done as "done"
+        from
+            todo
+        order by
+            (case when is_done = false
+                then 0
+                else 1
+            end),
+            due_date,
+            id
+    </select>
+    <select id="findById" resultType="com.example.todo.entity.Todo">
+        select
+            id,
+            title,
+            content,
+            due_date as "dueDate",
+            is_done as "done"
+        from
+            todo
+        where
+            id = #{id}
+    </select>
+    <insert id="insert" parameterType="com.example.todo.entity.Todo"
+        useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into todo (
+            title,
+            content,
+            due_date,
+            is_done
+        ) values (
+            #{title},
+            #{content},
+            #{dueDate},
+            #{done}
+        )
+    </insert>
+    <update id="update" parameterType="com.example.todo.entity.Todo">
+        update
+            todo
+        set
+            title = #{title},
+            content = #{content},
+            due_date = #{dueDate},
+            is_done = #{done}
+        where
+            id = #{id}
+    </update>
+    <delete id="delete">
+        delete from todo where id = #{id}
+    </delete>
+</mapper>
